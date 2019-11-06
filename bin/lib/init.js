@@ -2,7 +2,7 @@
  * @Author: Devin Shi
  * @Email: yutian.shi@definesys.com
  * @Date: 2019-11-05 14:08:21
- * @LastEditTime: 2019-11-06 17:38:19
+ * @LastEditTime: 2019-11-06 22:33:46
  * @LastEditors: Devin Shi
  * @Description: 
  */
@@ -28,6 +28,9 @@ module.exports = (name, cmd, program) => {
   const projectPath = path.resolve(`${process.cwd()}`, `dap-plugin-scaffold-${name}/`);
   
   const pluginsPath = path.resolve(`${projectPath}`, 'src/plugins');
+
+  const assetsPluginsPath = path.resolve(`${projectPath}`, 'src/assets/plugins');
+
   
   shelljs.rm('-rf', gitTemplateRepo);
   shelljs.mkdir('-p' , gitTemplateRepo);
@@ -70,6 +73,14 @@ module.exports = (name, cmd, program) => {
         });
       })
     }
+  })
+
+  const assetsFileList = fs.readdirSync(assetsPluginsPath);
+
+  assetsFileList.forEach((fileName) => {
+    if (fileName.indexOf('__{PLUGIN_NAME}__') !== -1) {
+      fs.renameSync(path.resolve(assetsPluginsPath, fileName), path.resolve(assetsPluginsPath, name))
+    } 
   })
 
   const dapCliName = '.dap-cli.json'
