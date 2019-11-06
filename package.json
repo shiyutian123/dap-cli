@@ -24,19 +24,15 @@
   },
   "homepage": "https://github.com/shiyutian123/dap-cli#readme",
   "dependencies": {
+    "axios": "^0.19.0",
     "colors": "^1.4.0",
     "commander": "^2.20.0",
-    "execa": "^2.0.4",
-    "inquirer": "^6.5.1",
-    "listr": "^0.14.3",
-    "log-update": "^2.3.0",
-    "rxjs": "^6.5.2",
+    "form-data": "^2.5.1",
     "shelljs": "^0.8.3",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "zip-local": "^0.3.4"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-register": "^6.26.0",
     "git-clone": "^0.1.0",
     "git-clone-sync": "^0.1.2",
     "install": "^0.13.0",
