@@ -2,7 +2,7 @@
  * @Author: Devin Shi
  * @Email: yutian.shi@definesys.com
  * @Date: 2019-11-05 14:08:21
- * @LastEditTime: 2019-11-06 16:52:48
+ * @LastEditTime: 2019-11-06 18:03:08
  * @LastEditors: Devin Shi
  * @Description: 
  */
@@ -116,6 +116,7 @@ module.exports = async (cmd, program) => {
     shell.mkdir('-p', downloadZipDist)
   } else {
     shell.rm('-rf', downloadZipDist)
+    shell.mkdir('-p', downloadZipDist)
   }
 
   var uploadZipFun = function() {
@@ -125,9 +126,11 @@ module.exports = async (cmd, program) => {
       responseType: "stream"
     }).then(res => {
       if (res.headers['status'] === 'completed') {
-        const writerStream = fs.createWriteStream(path.resolve(downloadZipDist) + ((dapCli.dist && dapCli.dist.outputName) || 'view.zip'))
+        const savePath = path.resolve(downloadZipDist) + '/' + ((dapCli.dist && dapCli.dist.outputName) || 'view.zip');
+        const writerStream = fs.createWriteStream(savePath)
         writerStream.on('finish', function() {
-          console.log(`文件保存完毕,最终保存在${path.resolve(downloadZipDist) + ((dapCli.dist && dapCli.dist.outputName) || 'view.zip')}目录中`['green']);
+          console.log(`文件打包完成`['green']);
+          console.log(`文件保存完毕,最终保存在 ${savePath} 目录中`['green']);
         });
         
         writerStream.on('error', function(err){
@@ -143,7 +146,7 @@ module.exports = async (cmd, program) => {
         }
         setTimeout(() => {
           timeAll += 30000;
-          console.log('文件打包中,请耐心等待... '['yellow']);
+          console.log(`文件打包中,请耐心等待, 预计还需要${(300000 - timeAll) / 60000}分钟...`['yellow']);
           uploadZipFun()
         }, 30000)
       }

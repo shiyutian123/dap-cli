@@ -2,7 +2,7 @@
  * @Author: Devin Shi
  * @Email: yutian.shi@definesys.com
  * @Date: 2019-11-05 14:08:21
- * @LastEditTime: 2019-11-06 16:54:22
+ * @LastEditTime: 2019-11-06 17:38:19
  * @LastEditors: Devin Shi
  * @Description: 
  */
@@ -64,7 +64,7 @@ module.exports = (name, cmd, program) => {
       fs.renameSync(path.resolve(pluginsPath, fileName), path.resolve(pluginsPath, name))
     } else if (fileName.indexOf('index.ts') !== -1) {
       fs.readFile(path.resolve(pluginsPath, fileName), 'utf-8', function(err, files) {
-        var result = files.replace(new RegExp("__{PLUGIN_NAME}__"), `${name}/`)
+        var result = files.replace(new RegExp("__{PLUGIN_NAME}__", 'g'), `${name}`)
         fs.writeFile(path.resolve(pluginsPath, fileName), result, 'utf8', function (err) {
           if (err) return console.log(err);
         });
@@ -72,10 +72,21 @@ module.exports = (name, cmd, program) => {
     }
   })
 
+  const dapCliName = '.dap-cli.json'
+
+  fs.readFile(path.resolve(projectPath, dapCliName), 'utf-8', function(err, files) {
+    var result = files.replace(new RegExp("__{PLUGIN_NAME}__", 'g'), `${name}`)
+    fs.writeFile(path.resolve(projectPath, dapCliName), result, 'utf8', function (err) {
+      if (err) return console.log(err);
+    });
+  })
+
   console.log('4. 插件工程生成完成'['green'])
 
-  console.log('接下来,执行如下命令, 开始开发新插件吧'['green'])
-  console.log(`cd dap-plugin-scaffold-${name}`['green'])
-  console.log('npm install'['green'])
-  console.log('npm run start'['green'])
+  setTimeout(() => {
+    console.log('接下来,执行如下命令, 开始开发新插件吧'['green'])
+    console.log(`cd dap-plugin-scaffold-${name}`['green'])
+    console.log('npm install'['green'])
+    console.log('npm run start'['green'])
+  }, 500);
 }
